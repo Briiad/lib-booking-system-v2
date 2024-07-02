@@ -16,6 +16,8 @@ import {
 import { IconBookmarksFilled } from '@tabler/icons-react';
 import classes from '@/css/SideNav.module.css';
 
+export const dynamic = 'force-dynamic';
+
 interface NavbarLinkProps {
   icon: typeof IconHome2;
   label: string;

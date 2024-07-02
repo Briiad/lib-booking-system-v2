@@ -6,6 +6,8 @@ import { Table, ScrollArea, Button, Box, Text, Title, Pagination, Center, Badge,
 import { useDisclosure } from '@mantine/hooks';
 import classes from '@/css/HistoryTable.module.css';
 
+export const dynamic = 'force-dynamic';
+
 const fetchData = async (url: string) => {
   const response = await fetch(url);
   return response.json();

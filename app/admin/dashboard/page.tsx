@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-
+export const dynamic = 'force-dynamic';
 const Dashboard = () => {
 
   const downloadFile = async () => {
