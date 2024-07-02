@@ -1,0 +1,72 @@
+generator client {
+  provider = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("NEXT_POSTGRES_URL")
+}
+
+model Admin {
+  id        String   @id @default(cuid())
+  password  String
+  username  String?  @unique
+  name      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Ruangan {
+  room_id   String   @id @default(cuid())
+  room_name String
+
+  sessions     Sesi[]
+  Pinjam_Ruang Pinjam_Ruang[]
+}
+
+model Sesi {
+  session_id String   @id @default(cuid())
+  session    Int // assuming session is a number from 1 to 6
+
+  room         Ruangan        @relation(fields: [room_id], references: [room_id])
+  room_id      String
+  Pinjam_Ruang Pinjam_Ruang[]
+
+  @@unique([room_id, session]) // ensures a session is unique per room
+}
+
+model Pinjam_Ruang {
+  id         Int  @id @default(autoincrement())
+  user_name  String
+  user_nim   String
+  user_mail  String
+  date       DateTime
+  status     String   @default("pending")
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  room    Ruangan @relation(fields: [room_id], references: [room_id])
+  room_id String
+
+  session Sesi    @relation(fields: [session_id], references: [session_id])
+  session_id String
+
+  @@unique([room_id, session_id, date]) // ensures a room's session can only be booked once per date
+}
+
+model Riwayat {
+  id        String   @id @default(cuid())
+  user_name String
+  user_nim  String   @unique @db.VarChar(255)
+  user_mail String
+  room_id   String
+  room_name String
+  date      DateTime
+  startDate DateTime
+  session_id String
+  session   Int
+  status    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
